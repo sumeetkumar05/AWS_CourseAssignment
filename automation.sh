@@ -32,3 +32,12 @@ sudo apt install awscli
 aws s3 \
 cp /tmp/${myname}-httpd-logs-${timestamp}.tar \
 s3://${s3_bucket}/${myname}-httpd-logs-${timestamp}.tar
+
+if [[ ! -e /var/www/html/inventory.html ]]; then
+    mkdir -p /html
+    touch /var/www/html/inventory.html
+	echo "Log Type               Date Created               Type      Size" >> /var/www/html/inventory.html
+fi
+
+cd /tmp/
+ls -l| grep *.tar| awk '{print $6,$7,$8,$9}' >> /var/www/html/inventory.html
